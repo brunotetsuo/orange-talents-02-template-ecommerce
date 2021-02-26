@@ -4,10 +4,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.mercadolivre.mercadolivre.validations.UniqueValue;
+
 public class NovoUsuarioRequest {
 	
 	@NotBlank
 	@Email
+	@UniqueValue(domainClass = Usuario.class, fieldName = "login", message = "Já existe esse Login cadastrado no sistema")
 	private String login;
 	
 	@NotBlank

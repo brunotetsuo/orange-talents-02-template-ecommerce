@@ -2,6 +2,7 @@ package com.mercadolivre.mercadolivre.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @Configuration
+@Profile("prod")
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Override
@@ -28,10 +30,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	// Configuracoes de autorizacao
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/topicos").permitAll()
-				.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+		http.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/usuarios")
-				.permitAll().antMatchers(HttpMethod.GET, "/actuator/**")
 				.permitAll().and()
 				.csrf().disable();
 	}
@@ -39,8 +39,6 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	// Configuracoes de recursos estaticos(js, css, imagens, etc.)
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**",
-				"/swagger-resources/**");
 	}
 
 }

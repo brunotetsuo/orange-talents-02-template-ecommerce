@@ -34,6 +34,7 @@ public class NovoUsuarioControllerTest {
 
 	@PersistenceContext
 	private EntityManager manager;
+	
 
 	private String toJson(NovoUsuarioRequest request) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(request);
@@ -49,7 +50,7 @@ public class NovoUsuarioControllerTest {
 
 		List<Usuario> usuarios = manager.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
 
-		Usuario usuario = usuarios.get(0);
+		Usuario usuario = usuarios.get(1);
 
 		assertAll(
 				() -> assertNotNull(usuarios),
@@ -98,16 +99,23 @@ public class NovoUsuarioControllerTest {
 	@Test
 	@DisplayName("Deve criar um novo usuario com Hash de senha")
 	void deveCriarUmNovoUsuarioComHashSenha() throws Exception {
-		
-		NovoUsuarioRequest request = new NovoUsuarioRequest("bruno@email.com", "123456");
-		mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON)
-				.content(toJson(request))).andExpect(status().isOk());
 
-		List<Usuario> usuarios = manager.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
-
-		Usuario usuario = usuarios.get(0);
+		Usuario usuario = new Usuario("teste@email.com", "123456");
 
 		assertNotEquals("123456", usuario.getSenha());
+	}
+	
+	@Test
+	@DisplayName("Devolver status 400 caso login já exista")
+	void loginNaoPodeSerDuplicado() throws Exception {
+
+		NovoUsuarioRequest request = new NovoUsuarioRequest("teste@email.com", "123456");
+		mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON)
+				.content(toJson(request))).andExpect(status().isOk());
+		NovoUsuarioRequest request2 = new NovoUsuarioRequest("teste@email.com", "123456");
+		mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON)
+				.content(toJson(request2))).andExpect(status().isBadRequest());
+		
 	}
 
 }
