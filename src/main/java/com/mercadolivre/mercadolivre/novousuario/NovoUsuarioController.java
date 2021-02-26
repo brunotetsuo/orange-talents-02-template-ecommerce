@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,10 @@ public class NovoUsuarioController {
 	
 	@PostMapping
 	@Transactional
-	public String criaUsuario(@RequestBody @Valid NovoUsuarioRequest request) {
+	public ResponseEntity<Usuario> criaUsuario(@RequestBody @Valid NovoUsuarioRequest request) {
 		Usuario usuario = request.toModel();
 		manager.persist(usuario);
-		return usuario.toString();
+		return ResponseEntity.ok().build();
 	}
 
 }
