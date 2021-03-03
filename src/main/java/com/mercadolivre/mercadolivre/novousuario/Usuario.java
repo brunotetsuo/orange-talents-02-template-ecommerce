@@ -131,4 +131,8 @@ public class Usuario implements UserDetails {
 		return true;
 	}
 
+	public String getEmail() {
+		return this.login;
+	}
+
 }
