@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.mercadolivre.mercadolivre.novoproduto.Produto;
 import com.mercadolivre.mercadolivre.novousuario.Usuario;
 
@@ -55,6 +57,10 @@ public class Compra {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String urlRedirecionamento(UriComponentsBuilder uriComponentsBuilder) {
+		return this.gatewayPagamento.criaUrlRetorno(this, uriComponentsBuilder);
 	}
 
 }

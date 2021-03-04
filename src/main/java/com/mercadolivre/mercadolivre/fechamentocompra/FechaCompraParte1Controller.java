@@ -41,18 +41,8 @@ public class FechaCompraParte1Controller {
 			GatewayPagamento gateway = request.getGateway();
 			Compra novaCompra = new Compra(produtoASerComprado, quantidade, comprador, gateway);
 			manager.persist(novaCompra);
-
-			if (gateway.equals(GatewayPagamento.pagseguro)) {
-				String urlRetornoPagseguro = uriComponentsBuilder.path("/retorno-pagseguro/{id)")
-						.buildAndExpand(novaCompra.getId()).toString();
-
-				return "pagseguro.com/" + novaCompra.getId() + "?redirectUrl=" + urlRetornoPagseguro;
-			} else {
-				String urlRetornoPaypal = uriComponentsBuilder.path("/retorno-paypal/{id)")
-						.buildAndExpand(novaCompra.getId()).toString();
-
-				return "paypal.com/" + novaCompra.getId() + "?redirectUrl=" + urlRetornoPaypal;
-			}
+			
+			return novaCompra.urlRedirecionamento(uriComponentsBuilder);
 		}
 
 		BindException problemaComEstoque = new BindException(request, "novaCompraRequest");
