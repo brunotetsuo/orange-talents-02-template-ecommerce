@@ -165,4 +165,15 @@ public class Produto {
 		return new Opinioes(this.opinioes);
 	}
 
+	public boolean abataEstoque(@Positive int quantidade) {
+		Assert.isTrue(quantidade > 0, "A quantidade deve ser maior que 0 para abater o estoque "+quantidade);
+		
+		if(quantidade <= this.quantidade) {
+			this.quantidade -= quantidade;
+			return true;
+		}
+		
+		return false;
+	}
+
 }
