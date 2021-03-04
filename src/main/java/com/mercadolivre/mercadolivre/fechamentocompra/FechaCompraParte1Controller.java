@@ -29,7 +29,7 @@ public class FechaCompraParte1Controller {
 
 	@PostMapping
 	@Transactional
-	public String postMethodName(@RequestBody @Valid NovaCompraRequest request,
+	public String fechamentoCompraParte1(@RequestBody @Valid NovaCompraRequest request,
 			UriComponentsBuilder uriComponentsBuilder) throws BindException {
 		Produto produtoASerComprado = manager.find(Produto.class, request.getIdProduto());
 
